@@ -2,18 +2,18 @@
 
 Este projeto implementa uma ferramenta de monitoramento de tráfego de rede em tempo real desenvolvida em **Python** (utilizando Raw Sockets), operando sobre uma infraestrutura de tunelamento customizada escrita em **C**.
 
-[cite_start]O objetivo é interceptar, analisar e registrar pacotes de rede (Camadas de Rede, Transporte e Aplicação) que trafegam através de uma interface virtual (`tun0`), simulando um cenário de Proxy/Gateway em uma rede corporativa[cite: 5].
+O objetivo é interceptar, analisar e registrar pacotes de rede (Camadas de Rede, Transporte e Aplicação) que trafegam através de uma interface virtual (`tun0`), simulando um cenário de Proxy/Gateway em uma rede corporativa.
 
 ## 📋 Sobre o Projeto
 
 O sistema é dividido em dois componentes principais:
 
-1.  [cite_start]**Infraestrutura de Túnel (C):** Responsável por criar uma interface virtual (`tun0`), encapsular o tráfego dos clientes e transportá-lo até o servidor (proxy), onde é realizado o NAT (Masquerading) para acesso à internet[cite: 14, 18].
-2.  [cite_start]**Network Sniffer (Python):** Uma aplicação gráfica que "escuta" a interface `tun0` no servidor, decodifica os cabeçalhos dos pacotes (IP, TCP, UDP, ICMP, HTTP, DNS, etc.) e exibe estatísticas em tempo real, além de salvar logs em CSV[cite: 6, 24].
+1.  **Infraestrutura de Túnel (C):** Responsável por criar uma interface virtual (`tun0`), encapsular o tráfego dos clientes e transportá-lo até o servidor (proxy), onde é realizado o NAT (Masquerading) para acesso à internet.
+2.  **Network Sniffer (Python):** Uma aplicação gráfica que "escuta" a interface `tun0` no servidor, decodifica os cabeçalhos dos pacotes (IP, TCP, UDP, ICMP, HTTP, DNS, etc.) e exibe estatísticas em tempo real, além de salvar logs em CSV.
 
 ## 🏗️ Arquitetura da Rede
 
-O cenário simula clientes em uma rede interna que acessam a internet através de um servidor Proxy. [cite_start]O tráfego é encapsulado pelo programa túnel[cite: 36, 50].
+O cenário simula clientes em uma rede interna que acessam a internet através de um servidor Proxy. O tráfego é encapsulado pelo programa túnel.
 
 ```mermaid
 graph LR
@@ -66,10 +66,10 @@ sudo apt-get install build-essential python3-tk iptables net-tools
 
 ## ▶️ Como Rodar
 
-[cite_start]Para o sistema funcionar, você precisa de pelo menos duas máquinas (ou containers/VMs) na mesma rede LAN: uma atuando como **Servidor** e outra como **Cliente**[cite: 96, 97].
+Para o sistema funcionar, você precisa de pelo menos duas máquinas (ou containers/VMs) na mesma rede LAN: uma atuando como **Servidor** e outra como **Cliente**[cite: 96, 97].
 
 ### 1. Configurando o Servidor (Proxy)
-[cite_start]Na máquina que servirá como gateway e onde o sniffer irá rodar[cite: 19, 24]:
+Na máquina que servirá como gateway e onde o sniffer irá rodar:
 
 ```bash
 # Sintaxe: sudo ./traffic_tunnel <interface_fisica> -s
@@ -102,22 +102,22 @@ A interface gráfica abrirá exibindo as estatísticas zeradas. Assim que o Clie
 O sniffer gera automaticamente três arquivos CSV no diretório de execução:
 
 * **`camada_internet.csv`**:
-  * [cite_start]**Colunas:** `Data_Hora`, `Protocolo`, `IP_Origem`, `IP_Destino`, `ID_Proto_Carga`, `Info_Extra`, `Tamanho_Total` [cite: 26, 27, 28, 29, 30, 31, 32]
+  * **Colunas:** `Data_Hora`, `Protocolo`, `IP_Origem`, `IP_Destino`, `ID_Proto_Carga`, `Info_Extra`, `Tamanho_Total` .
 * **`camada_transporte.csv`**:
-  * [cite_start]**Colunas:** `Data_Hora`, `Protocolo`, `IP_Origem`, `Porta_Origem`, `IP_Destino`, `Porta_Destino`, `Tamanho_Total` [cite: 33, 34, 37, 38, 39, 40, 41, 42]
+  * **Colunas:** `Data_Hora`, `Protocolo`, `IP_Origem`, `Porta_Origem`, `IP_Destino`, `Porta_Destino`, `Tamanho_Total` .
 * **`camada_aplicacao.csv`**:
-  * [cite_start]**Colunas:** `Data_Hora`, `Protocolo`, `Informacoes` (Ex: "Query DNS" ou trechos de pacotes HTTP)[cite: 43, 44, 45, 46].
+  * **Colunas:** `Data_Hora`, `Protocolo`, `Informacoes` (Ex: "Query DNS" ou trechos de pacotes HTTP).
 
 ## 🧩 Estrutura de Arquivos
 
 * `sniffer.py`: Aplicação principal de monitoramento (Python).
 * `traffic_tunnel.c`: Código fonte principal do túnel.
 * `tunnel.c` / `tunnel.h`: Biblioteca de manipulação da interface TUN/TAP.
-* [cite_start]`server.sh`: Script de configuração de rede do servidor (NAT/IP Forwarding)[cite: 92].
-* [cite_start]`client1.sh` / `client2.sh`: Scripts de configuração de rede dos clientes[cite: 105, 106].
-* [cite_start]`Makefile`: Automação de compilação[cite: 95].
+* `server.sh`: Script de configuração de rede do servidor (NAT/IP Forwarding).
+* `client1.sh` / `client2.sh`: Scripts de configuração de rede dos clientes.
+* `Makefile`: Automação de compilação.
 
 ---
-[cite_start]**Nota:** Este projeto foi desenvolvido como parte da disciplina de Redes de Computadores para estudo de Raw Sockets e arquitetura TCP/IP[cite: 2, 8].
+**Nota:** Este projeto foi desenvolvido como parte da disciplina de Redes de Computadores para estudo de Raw Sockets e arquitetura TCP/IP.
    
 
